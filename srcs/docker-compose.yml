@@ -1,0 +1,35 @@
+
+version: '3'
+
+services:
+  mariadb:
+    build:
+      context: ./requirements/mariadb
+      dockerfile: Dockerfile
+    container_name: mariadb
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=votre_mot_de_passe_root_securise
+      - DB_NAME=wordpress
+      - DB_USER=wpuser
+      - DB_PASSWORD=votre_mot_de_passe_securise
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - inception_network
+    expose:
+      - "3306"
+    
+  # Les autres services (WordPress, NGINX, etc.) iront ici
+
+networks:
+  inception_network:
+    driver: bridge
+
+volumes:
+  mariadb_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/srandria/data/mariadb
+      o: bind
