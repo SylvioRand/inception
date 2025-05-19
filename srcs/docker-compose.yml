@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  ngnix:
+    build: 
+      context: ./requirements/nginx
+      dockerfile: Dockerfile
+    container_name: nginx
+    restart: unless-stopped
+
+  mariadb:
+    build:
+      context: ./requirements/mariadb
+      dockerfile: Dockerfile
+    container_name: mariadb
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - mariadb_data:/var/lib/mysql
+      #- /home/srandria/srcs/requirements/mariadb:/entrypoint/
+    networks:
+      - inception_network
+    expose:
+      - "3306"
+    
+networks:
+  inception_network:
+    driver: bridge
+
+volumes:
+  mariadb_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/srandria/data/mariadb
+      o: bind
