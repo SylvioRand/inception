@@ -30,11 +30,12 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
 RUN mkdir -p /var/www/wordpress
 
 # Téléchargement et extraction de WordPress
-
 RUN wget https://wordpress.org/wordpress-6.2.2.tar.gz && \
     tar -xzf wordpress-6.2.2.tar.gz && \
-    mv wordpress /var/www/wordpress && \
-    rm wordpress-6.2.2.tar.gz
+    rm wordpress-6.2.2.tar.gz && \
+    mv wordpress/* /var/www/wordpress && \
+    rmdir wordpress
+
 
 # Configuration de PHP-FPM
 RUN mkdir -p /run/php && \
