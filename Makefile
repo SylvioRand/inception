@@ -1,4 +1,4 @@
-NAME     = inception
+pNAME     = inception
 COMPOSE  = docker compose -f srcs/docker-compose.yml
 LOGIN    = srandria
 DATA_DIR = /home/$(LOGIN)/data/mariadb

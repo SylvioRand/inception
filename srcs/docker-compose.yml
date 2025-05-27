@@ -10,12 +10,12 @@ services:
     networks:
       - inception
     restart: unless-stopped
-    ports:
-      - "443:443"
     volumes:
       - ./requirements/nginx/conf/default.conf:/etc/nginx/conf.d/default.conf:ro
       - ./requirements/nginx/certs:/etc/nginx/certs:ro
       - wordpress_data:/var/www/wordpress
+    ports:
+      - "443:443"
   wordpress:
     build: 
       context: ./requirements/wordpress
@@ -25,8 +25,20 @@ services:
     networks:
       - inception
     restart: unless-stopped
+    environment:
+      - DOMAIN_NAME=${DOMAIN_NAME:-srandria.42.fr}
+      - DB_HOST=mariadb
+      - DB_USER=${MYSQL_USER:-wpusr}
+      - DB_PASSWORD_FILE=/run/secrets/db_password:ro
+      - WP_ADMIN_USER=superuser42
+      - WP_ADMIN_PASS=supersecure
+      - WP_ADMIN_EMAIL=admin@inception.fr
+      - WP_USER=editoruser
+      - WP_USER_PASS=userpass123
+      - WP_USER_EMAIL=user@inception.fr
     volumes:
       - wordpress_data:/var/www/wordpress
+      - ../secrets/db_password.txt:/run/secrets/db_password:ro
     expose:
       - "9000"
   mariadb:
