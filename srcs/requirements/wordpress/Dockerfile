@@ -36,7 +36,6 @@ RUN wget https://wordpress.org/wordpress-6.2.2.tar.gz && \
     mv wordpress/* /var/www/wordpress && \
     rmdir wordpress
 
-
 # Configuration de PHP-FPM
 RUN mkdir -p /run/php && \
     sed -i 's|^listen = .*|listen = 9000|' /etc/php/7.4/fpm/pool.d/www.conf && \
