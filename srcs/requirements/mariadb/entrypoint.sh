@@ -11,13 +11,21 @@ wait_for_mysql() {
 
 echo "Initialisation de MariaDB..."
 
+# 💡 Forcer MariaDB à écouter sur toutes les interfaces (vraiment !)
+CONFIG_FILE="/etc/mysql/mariadb.conf.d/50-server.cnf"
+if grep -q "^bind-address" "$CONFIG_FILE"; then
+    sed -i 's/^bind-address\s*=.*/bind-address = 0.0.0.0/' "$CONFIG_FILE"
+else
+    echo "bind-address = 0.0.0.0" >> "$CONFIG_FILE"
+fi
+
 # Initialiser la base de données
 mysql_install_db --user=mysql --datadir=/var/lib/mysql
 
 # Démarrer le serveur temporairement
 /usr/bin/mysqld_safe --datadir=/var/lib/mysql &
 
-# Extraction des donnees sensibles
+# Extraction des données sensibles
 if [ -f "$MYSQL_ROOT_PASSWORD_FILE" ]; then
   export MYSQL_ROOT_PASSWORD=$(cat "$MYSQL_ROOT_PASSWORD_FILE")
 else
@@ -48,8 +56,10 @@ GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'%';
 -- Appliquer les privilèges
 FLUSH PRIVILEGES;
 EOF
-    
-# Arrêter le serveur temporaire
-mysqladmin -u root -p${MYSQL_ROOT_PASSWORD} shutdown
 
+# Arrêter le serveur temporaire
+mysqladmin -u root -p"${MYSQL_ROOT_PASSWORD}" shutdown
+
+# Lancer MariaDB en mode normal
 exec "$@"
+
