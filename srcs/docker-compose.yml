@@ -12,7 +12,6 @@ services:
     restart: unless-stopped
     volumes:
       - ./requirements/nginx/conf/default.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./requirements/nginx/certs:/etc/nginx/certs:ro
       - wordpress_data:/var/www/wordpress
     ports:
       - "443:443"
@@ -67,20 +66,12 @@ services:
     networks:
       - inception
     restart: unless-stopped
-    environment:
-      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db_root_password
-      - MYSQL_DATABASE=${MYSQL_DATABASE:-wordpress}
-      - MYSQL_USER=${MYSQL_USER:-wpuser}
-      - MYSQL_PASSWORD_FILE=/run/secrets/db_password
     volumes:
-      - mariadb_data:/var/lib/mysql
-      - ../secrets/db_root_password.txt:/run/secrets/db_root_password:ro
-      - ../secrets/db_password.txt:/run/secrets/db_password:ro
-      - ./requirements/mariadb/conf/my.cnf:/etc/mysql/conf.d/my.cnf
-    expose:
-      - "0000"
-
-
+      - wordpress_data:/var/www/wordpress
+    ports:
+      - "21:21"
+      - "20:20"
+      - "40000-40010:40000-40010"
     
 networks:
   inception:
