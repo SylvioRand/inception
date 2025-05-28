@@ -58,6 +58,29 @@ services:
       - ./requirements/mariadb/conf/my.cnf:/etc/mysql/conf.d/my.cnf
     expose:
       - "3306"
+  ftp:
+    build:
+      context: ./requirements/ftp
+      dockerfile: Dockerfile
+    image: ftp
+    container_name: ftp
+    networks:
+      - inception
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db_root_password
+      - MYSQL_DATABASE=${MYSQL_DATABASE:-wordpress}
+      - MYSQL_USER=${MYSQL_USER:-wpuser}
+      - MYSQL_PASSWORD_FILE=/run/secrets/db_password
+    volumes:
+      - mariadb_data:/var/lib/mysql
+      - ../secrets/db_root_password.txt:/run/secrets/db_root_password:ro
+      - ../secrets/db_password.txt:/run/secrets/db_password:ro
+      - ./requirements/mariadb/conf/my.cnf:/etc/mysql/conf.d/my.cnf
+    expose:
+      - "0000"
+
+
     
 networks:
   inception:
