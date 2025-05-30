@@ -16,10 +16,10 @@ RUN apt-get update && apt-get install -y \
     php7.4-curl \
     php7.4-mbstring \
     php7.4-zip \
+    mariadb-client \
     wget \
     tar \
     curl \
-    mariadb-client \
  && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Installer WP-CLI
@@ -41,7 +41,6 @@ RUN mkdir -p /run/php && \
     sed -i 's|^listen = .*|listen = 9000|' /etc/php/7.4/fpm/pool.d/www.conf && \
     echo "listen.owner = www-data" >> /etc/php/7.4/fpm/pool.d/www.conf && \
     echo "listen.group = www-data" >> /etc/php/7.4/fpm/pool.d/www.conf
-
 
 # Définir le dossier de travail
 WORKDIR /var/www/wordpress

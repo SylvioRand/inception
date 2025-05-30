@@ -3,11 +3,13 @@ COMPOSE  = docker compose -f srcs/docker-compose.yml
 LOGIN    = srandria
 DATA_DIR = /home/$(LOGIN)/data/mariadb
 WP_DIR   = /home/$(LOGIN)/data/wordpress
+REDIS_DIR = /home/srandria/data/redis
+
 
 all: init build up
 
 init:
-	@echo "Checking $(DATA_DIR) and $(WP_DIR) directories..."
+	@echo "Checking $(DATA_DIR), $(WP_DIR) and ${REDIS_DIR} directories..."
 	@if [ ! -d $(DATA_DIR) ]; then \
 		echo "Creating $(DATA_DIR)\n"; \
 		mkdir -p $(DATA_DIR); \
@@ -20,7 +22,12 @@ init:
 	else \
 		echo "$(WP_DIR) already exists.\n"; \
 	fi
-
+	@if [ ! -d $(REDIS_DIR) ]; then \
+		echo "Creating $(REDIS_DIR)\n"; \
+		mkdir -p $(REDIS_DIR); \
+	else \
+		echo "$(REDIS_DIR) already exists.\n"; \
+	fi
 
 build:
 	@echo "Building containers from Dockerfiles..."
