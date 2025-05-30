@@ -20,7 +20,8 @@ else
 fi
 
 # Initialiser la base de données
-mysql_install_db --user=mysql --datadir=/var/lib/mysql
+#mysql_install_db --user=mysql --datadir=/var/lib/mysql
+mariadb-install-db --user=mysql --datadir=/var/lib/mysql
 
 # Démarrer le serveur temporairement
 /usr/bin/mysqld_safe --datadir=/var/lib/mysql &
@@ -45,20 +46,26 @@ wait_for_mysql
 
 # Sécuriser MariaDB et créer la base de données + utilisateur pour WordPress
 mysql -u root << EOF
--- Définir le mot de passe root
+-- Définir le mot de passe root (identique pour localhost et %)
 ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
+CREATE USER IF NOT EXISTS 'root'@'%' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
 
--- Créer un utilisateur non-admin avec accès distant pour WordPress
+-- Créer la DB + utilisateur WordPress
 CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};
 CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';
 GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'%';
 
--- Appliquer les privilèges
+-- Finalisation
 FLUSH PRIVILEGES;
 EOF
 
 # Arrêter le serveur temporaire
-mysqladmin -u root -p"${MYSQL_ROOT_PASSWORD}" shutdown
+if ! mysqladmin -u root -p"${MYSQL_ROOT_PASSWORD}" shutdown; then
+  echo "Échec de l'arrêt de MariaDB. Forçage..."
+  killall mysqld || true
+fi
+
 
 # Lancer MariaDB en mode normal
 exec "$@"
