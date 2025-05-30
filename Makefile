@@ -4,12 +4,12 @@ LOGIN    = srandria
 DATA_DIR = /home/$(LOGIN)/data/mariadb
 WP_DIR   = /home/$(LOGIN)/data/wordpress
 REDIS_DIR = /home/srandria/data/redis
-
+PORTAINER_DIR = /home/srandria/data/portainer
 
 all: init build up
 
 init:
-	@echo "Checking $(DATA_DIR), $(WP_DIR) and ${REDIS_DIR} directories..."
+	@echo "Checking $(DATA_DIR), $(WP_DIR), ${REDIS_DIR} and ${PORTAINER_DIR} directories..."
 	@if [ ! -d $(DATA_DIR) ]; then \
 		echo "Creating $(DATA_DIR)\n"; \
 		mkdir -p $(DATA_DIR); \
@@ -28,6 +28,13 @@ init:
 	else \
 		echo "$(REDIS_DIR) already exists.\n"; \
 	fi
+	@if [ ! -d $(PORTAINER_DIR) ]; then \
+		echo "Creating $(PORTAINER_DIR)\n"; \
+		mkdir -p $(PORTAINER_DIR); \
+	else \
+		echo "$(PORTAINER_DIR) already exists.\n"; \
+	fi
+
 
 build:
 	@echo "Building containers from Dockerfiles..."

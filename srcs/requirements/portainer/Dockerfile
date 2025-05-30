@@ -14,5 +14,6 @@ RUN wget https://github.com/portainer/portainer/releases/download/${PORTAINER_VE
     rm portainer-${PORTAINER_VERSION}-linux-amd64.tar.gz
 
 VOLUME /data
+
 EXPOSE 9000
 CMD ["/opt/portainer/portainer"]
