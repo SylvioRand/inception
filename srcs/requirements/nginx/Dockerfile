@@ -13,4 +13,4 @@ RUN mkdir -p /etc/nginx/certs && \
     -out /etc/nginx/certs/cert.pem -days 365 \
     -subj "/C=MG/ST=Analamanga/L=Antananarivo/O=42/OU=Inception/CN=srandria.42.fr"
 
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
