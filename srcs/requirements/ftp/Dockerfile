@@ -14,6 +14,9 @@ RUN mkdir -p /etc/nginx/certs && \
     -out /etc/ssl/certs/vsftpd.crt -days 365 \
     -subj "/C=MG/ST=Analamanga/L=Antananarivo/O=42/OU=Inception/CN=srandria.42.fr"
 
+RUN mkdir -p /var/www/wordpress /var/www/static && \
+    chmod 777 /var/www/wordpress /var/www/static
+
 # Copie des fichiers nécessaires
 COPY ./entrypoint.sh /entrypoint.sh
 COPY vsftpd.conf /etc/vsftpd.conf
@@ -23,4 +26,3 @@ EXPOSE 20 21 40000-40010
 
 # Utilise le script comme point d'entrée
 ENTRYPOINT ["/entrypoint.sh"]
-

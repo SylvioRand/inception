@@ -15,6 +15,7 @@ services:
     volumes:
       - ./requirements/nginx/conf/default.conf:/etc/nginx/conf.d/default.conf:ro
       - wordpress_data:/var/www/wordpress
+      - ./requirements/static_site:/var/www/static
     ports:
       - "443:443"
   wordpress:
@@ -77,11 +78,12 @@ services:
       - FTP_USER=${FTP_USER:-ftpuser}
     volumes:
       - ../secrets/ftp_password.txt:/run/secrets/ftp_password:ro
-      - wordpress_data:/var/www/wordpress
+      - /home/srandria/data/wordpress:/var/www/wordpress
+      - ./requirements/static_site:/var/www/static
     ports:
       - "21:21"
       - "20:20"
-      - "40000-40010:40000-40010"
+      - "40000-40010:40000-40010/tcp"
   redis:
     build:
       context: ./requirements/redis
@@ -129,28 +131,32 @@ networks:
 
 volumes:
   mariadb_data:
+    name: mariadb_data
     driver: local
     driver_opts:
       type: none
       device: /home/srandria/data/mariadb
       o: bind
   wordpress_data:
+    name: wordpress_data
     driver: local
     driver_opts:
       type: none
       device: /home/srandria/data/wordpress
       o: bind
   redis_data:
+    name: redis_data
     driver: local
     driver_opts:
       type: none
       device: /home/srandria/data/redis
       o: bind
   portainer_data:
+    name: portainer_data
     driver: local
     driver_opts:
       type: none
-      device: /home/srandria/data/redis
+      device: /home/srandria/data/portainer
       o: bind
 
 

@@ -12,10 +12,7 @@ RUN mkdir -p /data && \
     sed -i \
     -e 's/^bind .*/bind 0.0.0.0/' \
     -e 's/^daemonize .*/daemonize no/' \
-    -e 's/^protected-mode .*/protected-mode no/' \
-    -e 's/^logfile .*/logfile ""/' \
     -e 's/^dir .*/dir \/data/' \
-    -e 's/^supervised .*/supervised no/' \
     /etc/redis/redis.conf
 
 # Port Redis
@@ -25,4 +22,4 @@ EXPOSE 6379
 VOLUME /data
 
 # Commande de démarrage
-CMD ["redis-server", "/etc/redis/redis.conf"]
+ENTRYPOINT ["redis-server", "/etc/redis/redis.conf"]

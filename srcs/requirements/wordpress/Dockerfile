@@ -49,7 +49,6 @@ WORKDIR /var/www/wordpress
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# Exposer le port utilisé par PHP-FPM (ceci est purement informatif mais n`a pas d`inmpact sur la communication interne ou externe du container)
 EXPOSE 9000
 
 # Commande de démarrage
