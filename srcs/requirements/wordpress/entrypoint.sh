@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-# Charger les variables d'environnement sensibles
+# Load sensitive environment variable
 if [ -f /run/secrets/credentials.txt ]; then
     source /run/secrets/credentials.txt
 else
@@ -9,12 +9,12 @@ else
     exit 1
 fi
 
-# Lire les secrets depuis les fichiers (si définis par Docker secrets)
+# Load Database password
 [ -f "$DB_PASSWORD_FILE" ] && DB_PASSWORD=$(cat "$DB_PASSWORD_FILE")
 
 cd /var/www/wordpress
 
-# Générer wp-config.php s’il n’existe pas
+# Generate wp-config.php
 if [ ! -f wp-config.php ]; then
     wp config create \
         --dbname="${DB_NAME}" \
@@ -26,7 +26,7 @@ if [ ! -f wp-config.php ]; then
     wp config set WP_REDIS_HOST redis --allow-root
 fi
 
-# Installer WordPress si ce n’est pas déjà fait
+# Install WordPress
 if ! wp core is-installed --allow-root; then
     wp core install \
         --url="https://${DOMAIN_NAME}" \
@@ -42,7 +42,7 @@ if ! wp core is-installed --allow-root; then
         --allow-root
 fi
 
-# Installer et activer Redis Cache si pas déjà installé
+# Ensure Redis plugin is active
 if ! wp plugin is-installed redis-cache --allow-root; then
     wp plugin install redis-cache --activate --allow-root
 else
@@ -51,6 +51,4 @@ fi
 
 wp redis enable --allow-root
 
-# Lancer PHP-FPM
 exec php-fpm7.4 -F
-

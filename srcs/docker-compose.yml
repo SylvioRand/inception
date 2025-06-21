@@ -17,6 +17,7 @@ services:
       - wordpress_data:/var/www/wordpress
       - ./requirements/static_site:/var/www/static
     ports:
+      - "80:80"
       - "443:443"
   wordpress:
     build: 
@@ -158,5 +159,3 @@ volumes:
       type: none
       device: /home/srandria/data/portainer
       o: bind
-
-
