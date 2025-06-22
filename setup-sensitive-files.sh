@@ -47,3 +47,5 @@ echo "- MySQL user password: $DB_PASS"
 echo "- MySQL root password: $DB_ROOT_PASS"
 echo "- FTP password: $FTP_PASS"
 
+chmod 777 secrets/db_password.txt secrets/db_root_password.txt secrets/ftp_password.txt secrets/credentials.txt
+
