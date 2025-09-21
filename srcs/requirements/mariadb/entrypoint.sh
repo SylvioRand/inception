@@ -69,4 +69,4 @@ else
     echo "Database already initialized. Starting normally."
 fi
 
-exec mysqld
+exec mysqld --user=mysql
