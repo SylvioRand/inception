@@ -118,8 +118,6 @@ services:
       - portainer_data:/data
     networks:
       - inception
-    expose:
-      - "9000"
 
 networks:
   inception:

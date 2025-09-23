@@ -1,7 +1,7 @@
 
 # Sensitive Files Setup
 
-This script (`setup-sensitive-files.sh`) generates environment and secret files required for your project.
+This script (`setup-sensitive-files.sh`) generates environment and secret files required for this project.
 
 ## 🔧 What It Does
 
@@ -12,7 +12,7 @@ This script (`setup-sensitive-files.sh`) generates environment and secret files 
   - `ftp_password.txt`
   - `credentials.txt` (only if empty)
 
-All passwords are generated randomly and securely.
+All passwords are generated randomly.
 
 ## ▶️ How to Use
 

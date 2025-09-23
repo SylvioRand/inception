@@ -11,6 +11,6 @@ RUN apt-get update && apt-get install -y \
     && tar xzf portainer-${PORTAINER_VERSION}-linux-amd64.tar.gz -C /opt \
     && rm portainer-${PORTAINER_VERSION}-linux-amd64.tar.gz
 
-EXPOSE 9000
+#EXPOSE 9000
 
 ENTRYPOINT ["/opt/portainer/portainer"]

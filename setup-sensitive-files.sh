@@ -33,10 +33,10 @@ if [ ! -s secrets/credentials.txt ]; then
   WP_USER_PASS=$(generate_password)
 
   cat > secrets/credentials.txt <<EOF
-WP_ADMIN_USER=admin
+WP_ADMIN_USER=SuperUserX
 WP_ADMIN_PASS=$WP_ADMIN_PASS
 WP_ADMIN_EMAIL=admin@example.com
-WP_USER=user
+WP_USER=UserX
 WP_USER_PASS=$WP_USER_PASS
 WP_USER_EMAIL=user@example.com
 EOF

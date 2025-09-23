@@ -21,7 +21,7 @@ else
 fi
 
 # Check if MariaDB has already been initialized
-if [ ! -f "/.db_initialized" ]; then
+if [ ! -f "/var/lib/mysql/.db_initialized" ]; then
     echo "Database not initialized. Running setup..."
 
     mariadb-install-db --user=mysql --datadir=/var/lib/mysql
@@ -63,7 +63,7 @@ EOF
     mysqladmin -u root -p"${MYSQL_ROOT_PASSWORD}" shutdown || killall mysqld
 
     # Mark as initialized
-    touch /.db_initialized
+    touch /var/lib/mysql/.db_initialized
 
 else
     echo "Database already initialized. Starting normally."
